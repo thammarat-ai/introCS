@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>introCS — AI Basics 2026</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Prompt', 'Noto Sans Thai', system-ui, sans-serif;
+    background: #0b0f1a;
+    color: #eef2ff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(900px 500px at 85% -10%, rgba(124,140,255,.16), transparent 60%),
+      radial-gradient(800px 500px at -10% 110%, rgba(79,216,232,.12), transparent 60%),
+      radial-gradient(600px 400px at 50% 120%, rgba(255,122,184,.07), transparent 60%);
+  }
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    width: 100%;
+    text-align: center;
+  }
+  h1 {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: .5rem;
+    background: linear-gradient(120deg, #7c8cff, #4fd8e8, #7be8b0);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .subtitle {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: #9aa7c7;
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+  }
+  .card {
+    background: linear-gradient(160deg, #141d33, #1a2542);
+    border: 1px solid rgba(148,163,255,.18);
+    border-radius: 18px;
+    padding: 1.5rem 2rem;
+    margin: .8rem 0;
+    text-align: left;
+    transition: transform .25s ease, border-color .25s ease;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(124,140,255,.5);
+  }
+  .card a {
+    color: #4fd8e8;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+  .card a:hover { text-decoration: underline; }
+  .card .desc {
+    color: #9aa7c7;
+    font-size: .9rem;
+    margin-top: .3rem;
+    font-weight: 300;
+  }
+  .footer {
+    margin-top: 3rem;
+    color: #9aa7c7;
+    font-size: .85rem;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(124,140,255,.2);
+    color: #7c8cff;
+    padding: .2rem .8rem;
+    border-radius: 999px;
+    font-size: .8rem;
+    margin-bottom: .8rem;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <span class="badge">PLO7 — AI Basics 2026</span>
+    <h1>introCS</h1>
+    <p class="subtitle">พื้นฐานของหลักการปัญญาประดิษฐ์</p>
+
+    <a href="PLO7-AI-Basics-2026-TH-Learning-Deck.html">
+      <div class="card">
+        🎓 <strong>Learning Deck</strong>
+        <div class="desc">เปิดสไลด์ประกอบการเรียนในเบราว์เซอร์ (แนะนำ)</div>
+      </div>
+    </a>
+    <a href="PLO7-AI-Basics-2026-TH-Illustrated.pdf">
+      <div class="card">
+        📄 <strong>เอกสารประกอบ</strong>
+        <div class="desc">เอกสารประกอบการสอน (PDF)</div>
+      </div>
+    </a>
+    <a href="PLO7-เนื้อหาทั้งหมด2025.pdf">
+      <div class="card">
+        📝 <strong>เนื้อหาทั้งหมด</strong>
+        <div class="desc">เอกสารฉบับสมบูรณ์ (PDF)</div>
+      </div>
+    </a>
+    <a href="AI-Basics-2026-TH-Learning-Deck.pptx">
+      <div class="card">
+        📊 <strong>สไลด์ต้นฉบับ</strong>
+        <div class="desc">ไฟล์ PowerPoint (.pptx)</div>
+      </div>
+    </a>
+
+    <div class="footer">
+      พัฒนาโดย อาจารย์ธรรมรัตน์ ธรรมา · คณะ ICT · มหาวิทยาลัยพะเยา
+    </div>
+  </div>
+</body>
+</html>
