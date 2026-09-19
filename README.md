@@ -12,7 +12,8 @@
 |--------|-------|------------|
 | 🎓 **Learning Deck** | [PLO7-AI-Basics-2026-TH-Learning-Deck.html](PLO7-AI-Basics-2026-TH-Learning-Deck.html) | สไลด์ประกอบการเรียน (เปิดในเบราว์เซอร์ได้เลย) |
 | 📄 **เอกสารประกอบ** | [PLO7-AI-Basics-2026-TH-Illustrated.pdf](PLO7-AI-Basics-2026-TH-Illustrated.pdf) | เอกสารประกอบการสอน (PDF) |
-| 📝 **เนื้อหาทั้งหมด** | [PLO7-เนื้อหาทั้งหมด2025.pdf](PLO7-เนื้อหาทั้งหมด2025.pdf) | เอกสารฉบับสมบูรณ์ |
+| 📝 **เนื้อหาทั้งหมด 2026** | [PLO7-AI-Basics-2026-TH-Illustrated.docx.pdf](PLO7-AI-Basics-2026-TH-Illustrated.docx.pdf) | เอกสารฉบับสมบูรณ์ 2026|
+| 📝 **เนื้อหาทั้งหมด 2025** | [PLO7-เนื้อหาทั้งหมด2025.pdf](PLO7-เนื้อหาทั้งหมด2025.pdf) | เอกสารฉบับสมบูรณ์ 2025 |
 | 📊 **สไลด์ต้นฉบับ** | [AI-Basics-2026-TH-Learning-Deck.pptx](AI-Basics-2026-TH-Learning-Deck.pptx) | ไฟล์ PowerPoint ต้นฉบับ |
 
 ---
