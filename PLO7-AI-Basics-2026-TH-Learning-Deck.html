@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PLO7 • AI Basics 2026 — Learning Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0f1a; --card:#141d33; --card2:#1a2542;
+  --ink:#eef2ff; --muted:#9aa7c7; --line:rgba(148,163,255,.18);
+  --indigo:#7c8cff; --cyan:#4fd8e8; --pink:#ff7ab8; --amber:#ffcf6b; --green:#7be8b0;
+  --grad:linear-gradient(120deg,#7c8cff 0%,#4fd8e8 55%,#7be8b0 100%);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg); color:var(--ink); font-family:'Prompt','Noto Sans Thai',system-ui,sans-serif; overflow:hidden}
+body::before{content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:radial-gradient(900px 500px at 85% -10%, rgba(124,140,255,.16), transparent 60%),
+    radial-gradient(800px 500px at -10% 110%, rgba(79,216,232,.12), transparent 60%),
+    radial-gradient(600px 400px at 50% 120%, rgba(255,122,184,.07), transparent 60%);}
+#deck{position:fixed; inset:0; z-index:1}
+.slide{position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center;
+  padding:clamp(24px,6vh,72px) clamp(24px,7vw,110px);
+  opacity:0; visibility:hidden; transform:translateY(24px) scale(.985);
+  transition:opacity .45s ease, transform .45s ease, visibility 0s linear .45s; overflow:auto;}
+.slide.active{opacity:1; visibility:visible; transform:none; transition:opacity .45s ease, transform .45s ease}
+.kicker{font-size:clamp(.7rem,1.4vw,.95rem); letter-spacing:.35em; text-transform:uppercase; color:var(--cyan); font-weight:600; margin-bottom:.6rem}
+h1{font-size:clamp(2.2rem,6vw,4.6rem); font-weight:700; line-height:1.12; margin:.15em 0 .3em}
+h2{font-size:clamp(1.5rem,3.6vw,2.7rem); font-weight:700; line-height:1.2; margin-bottom:.35em}
+.lead{font-size:clamp(1rem,1.9vw,1.4rem); color:var(--muted); font-weight:300; max-width:56ch; line-height:1.7}
+.grad-text{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent}
+.rule{width:72px; height:4px; border-radius:2px; background:var(--grad); margin:1.1rem 0 1.4rem}
+.grid{display:grid; gap:clamp(.7rem,1.6vw,1.3rem); margin-top:1.6rem}
+.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.g5{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.card{background:linear-gradient(160deg,var(--card),var(--card2)); border:1px solid var(--line); border-radius:18px;
+  padding:clamp(1rem,2vw,1.6rem); transition:transform .25s ease, border-color .25s ease;}
+.card:hover{transform:translateY(-4px); border-color:rgba(124,140,255,.5)}
+.card .num{font-family:'JetBrains Mono',monospace; font-size:.8rem; color:var(--indigo); letter-spacing:.2em}
+.card h3{font-size:clamp(1.05rem,1.7vw,1.3rem); font-weight:600; margin:.45em 0 .35em}
+.card p{color:var(--muted); font-size:clamp(.85rem,1.3vw,1rem); font-weight:300; line-height:1.65}
+.card .tag{font-family:'JetBrains Mono',monospace; font-size:.72rem; letter-spacing:.15em; color:var(--cyan)}
+.tagline{margin-top:1.4rem; font-size:clamp(.95rem,1.5vw,1.15rem); color:var(--amber); font-weight:400}
+.warn{color:var(--pink)}
+.note{margin-top:1.2rem; padding:.9rem 1.2rem; border-left:3px solid var(--amber); background:rgba(255,207,107,.07);
+  border-radius:0 12px 12px 0; color:#e8dcb8; font-size:clamp(.85rem,1.3vw,1rem); font-weight:300; max-width:70ch; line-height:1.7}
+.note b{color:var(--amber)}
+.timeline{position:relative; margin-top:2rem; padding-top:1.6rem}
+.timeline::before{content:""; position:absolute; top:.55rem; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--indigo),var(--cyan),var(--pink))}
+.tl-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1rem}
+.tl-item .year{font-family:'JetBrains Mono',monospace; font-size:clamp(1.1rem,2vw,1.5rem); font-weight:600; color:var(--cyan)}
+.tl-item .year::before{content:""; display:block; width:10px; height:10px; border-radius:50%; background:var(--grad);
+  margin-top:-1.95rem; margin-bottom:.6rem; box-shadow:0 0 14px rgba(79,216,232,.8)}
+.tl-item p{color:var(--muted); font-size:.92rem; font-weight:300; margin-top:.3rem; line-height:1.55}
+.nest{display:flex; flex-direction:column; gap:.7rem; margin-top:1.8rem; max-width:760px}
+.nest .row{display:flex; align-items:center; gap:1rem; border:1px solid var(--line); border-radius:14px;
+  padding:.85rem 1.2rem; background:linear-gradient(160deg,var(--card),var(--card2))}
+.nest .row .lbl{font-family:'JetBrains Mono',monospace; color:var(--cyan); font-size:.85rem; min-width:150px}
+.nest .row p{color:var(--muted); font-size:.95rem; font-weight:300}
+.nest .row.hl{border-color:rgba(79,216,232,.55); background:linear-gradient(160deg,rgba(79,216,232,.10),var(--card2))}
+.arrow-flow{display:flex; flex-wrap:wrap; align-items:stretch; gap:.5rem; margin-top:1.8rem}
+.arrow-flow .step{flex:1; min-width:150px; background:linear-gradient(160deg,var(--card),var(--card2)); border:1px solid var(--line); border-radius:14px; padding:1rem}
+.arrow-flow .step .num{font-family:'JetBrains Mono',monospace; color:var(--indigo); font-size:.75rem; letter-spacing:.2em}
+.arrow-flow .step h3{font-size:1.05rem; margin:.35em 0 .3em}
+.arrow-flow .step p{color:var(--muted); font-size:.85rem; font-weight:300; line-height:1.6}
+.two-col{display:grid; grid-template-columns:1fr 1fr; gap:1.4rem; margin-top:1.6rem}
+@media(max-width:760px){.two-col{grid-template-columns:1fr}}
+.col-card{border:1px solid var(--line); border-radius:18px; padding:1.4rem; background:linear-gradient(160deg,var(--card),var(--card2))}
+.col-card.good{border-color:rgba(123,232,176,.45)}
+.col-card.bad{border-color:rgba(255,122,184,.45)}
+.col-card h3{font-size:1.2rem; margin-bottom:.6rem}
+.col-card.good h3{color:var(--green)} .col-card.bad h3{color:var(--pink)}
+.col-card p{color:var(--muted); font-weight:300; font-size:.95rem; line-height:1.7}
+.col-card ul{margin:.6rem 0 0 1.2rem; color:var(--muted); font-weight:300; font-size:.92rem; line-height:1.8}
+ul.tight{margin:.8rem 0 0 1.3rem; color:var(--muted); font-weight:300; line-height:2; font-size:clamp(.9rem,1.4vw,1.05rem)}
+ul.tight li::marker{color:var(--cyan)}
+.stat{display:flex; flex-direction:column; align-items:flex-start; gap:.3rem}
+.stat .v{font-size:clamp(1.9rem,4vw,3rem); font-weight:700; background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent}
+.stat .l{color:var(--muted); font-weight:300; font-size:clamp(.85rem,1.3vw,1rem)}
+.mono{font-family:'JetBrains Mono',monospace}
+#progress{position:fixed; top:0; left:0; height:3px; background:var(--grad); z-index:50; width:0%; transition:width .3s ease}
+#hud{position:fixed; bottom:16px; left:0; right:0; display:flex; justify-content:space-between; align-items:center; padding:0 22px; z-index:50; pointer-events:none}
+#hud .brand{font-size:.75rem; letter-spacing:.25em; color:var(--muted); text-transform:uppercase}
+#hud .count{font-family:'JetBrains Mono',monospace; font-size:.8rem; color:var(--muted)}
+#nav{position:fixed; bottom:12px; right:18px; z-index:51; display:flex; gap:8px}
+#nav button{width:42px; height:42px; border-radius:12px; border:1px solid var(--line);
+  background:rgba(20,29,51,.85); color:var(--ink); font-size:1.1rem; cursor:pointer; backdrop-filter:blur(6px); transition:.2s;}
+#nav button:hover{border-color:var(--cyan); color:var(--cyan)}
+#hint{position:fixed; bottom:18px; left:50%; transform:translateX(-50%); z-index:50; color:var(--muted); font-size:.78rem; font-weight:300; letter-spacing:.06em; opacity:.85}
+#hint kbd{border:1px solid var(--line); border-radius:6px; padding:0 6px; font-family:'JetBrains Mono',monospace; font-size:.72rem; background:var(--card)}
+#deck.overview{position:static; overflow:auto; display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:14px; padding:60px 24px 80px}
+#deck.overview .slide{position:relative; inset:auto; opacity:1; visibility:visible; transform:none; min-height:230px; height:44vh; border:1px solid var(--line); border-radius:16px; cursor:pointer; overflow:hidden; padding:18px 22px; transition:.2s}
+#deck.overview .slide:hover{border-color:var(--cyan)}
+#deck.overview .slide *{pointer-events:none}
+#deck.overview .slide h1{font-size:1.4rem} #deck.overview .slide h2{font-size:1.05rem}
+#deck.overview .slide .lead,#deck.overview .slide p,#deck.overview .slide li{font-size:.72rem!important; line-height:1.45!important}
+#deck.overview .slide .card,#deck.overview .slide .col-card,#deck.overview .slide .step{padding:.5rem .7rem}
+#deck.overview .slide .grid{gap:.4rem; margin-top:.5rem}
+#deck.overview .slide .note{display:none}
+#deck.overview .slide .rule{margin:.5rem 0}
+#deck.overview .slide .timeline::before,#deck.overview .slide .tl-item .year::before{display:none}
+#deck.overview .slide .stat .v{font-size:1.2rem}
+#deck.overview .slide .nest{gap:.3rem; margin-top:.5rem}
+#deck.overview .slide .nest .row{padding:.4rem .7rem}
+#deck.overview .slide .arrow-flow{margin-top:.5rem}
+@media print{
+  body{overflow:visible}
+  #hud,#nav,#hint,#progress{display:none}
+  #deck{position:static}
+  .slide{position:relative; opacity:1; visibility:visible; transform:none; page-break-after:always; min-height:100vh}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div id="deck">
+<!-- 1 ปก -->
+<section class="slide">
+  <div class="kicker">PLO7 <span class="dot">•</span> AI Basics 2026</div>
+  <h1><span class="grad-text">AI 2026</span><br>เข้าใจหลักการ • ใช้เป็น<br>ตรวจสอบได้ • ออกแบบอย่างรับผิดชอบ</h1>
+  <div class="rule"></div>
+  <p class="lead">เอกสารประกอบการเรียนระดับเริ่มต้น สำหรับผู้เรียนสายวิทยาการคอมพิวเตอร์<br>ปรับปรุงข้อมูล ณ กันยายน 2026</p>
+  <p class="tagline mono">PLO7: สามารถอธิบายพื้นฐานของหลักการปัญญาประดิษฐ์ได้</p>
+</section>
+
+<!-- 2 Learning outcomes -->
+<section class="slide">
+  <div class="kicker">Learning Outcomes</div>
+  <h2>เมื่อจบบทเรียน คุณจะทำได้ <span class="grad-text">5 อย่าง</span></h2>
+  <div class="grid g5">
+    <div class="card"><div class="num">01</div><h3>แยก AI • ML • DL • GenAI</h3><p>อธิบายความแตกต่างของแต่ละวงได้ชัดเจน</p></div>
+    <div class="card"><div class="num">02</div><h3>อธิบายวงจรชีวิตโมเดล</h3><p>ข้อมูล → ฝึก → อนุมาน → ประเมินผล</p></div>
+    <div class="card"><div class="num">03</div><h3>เลือก Prompt • RAG • Agent</h3><p>เปรียบเทียบและเลือกเครื่องมือให้เหมาะกับงาน</p></div>
+    <div class="card"><div class="num">04</div><h3>ตรวจคำตอบและความเสี่ยง</h3><p>ตรวจข้อผิดพลาด อคติ และความเสี่ยงได้</p></div>
+    <div class="card"><div class="num">05</div><h3>สร้าง AI ไทยที่มีคนกำกับ</h3><p>มองเห็นโอกาสที่ตอบโจทย์ประเทศไทย</p></div>
+  </div>
+</section>
+
+<!-- 3 บทที่ 1 -->
+<section class="slide">
+  <div class="kicker">บทที่ 1 • AI คืออะไร</div>
+  <h1>AI <span class="grad-text">เรียนรู้รูปแบบ</span><br>เพื่อทำนายและสร้าง</h1>
+  <div class="rule"></div>
+  <p class="lead">ปัญญาประดิษฐ์คือสาขาที่สร้างระบบให้ทำงานซึ่งปกติต้องอาศัยความสามารถของมนุษย์ — รับรู้ภาพและเสียง เข้าใจภาษา คาดการณ์ วางแผน สร้างเนื้อหา และตัดสินใจภายใต้ข้อจำกัด</p>
+  <div class="note"><b>"เรียนรู้"</b> = ปรับพารามิเตอร์จากข้อมูลเพื่อลดความผิดพลาดตามเป้าหมายทางคณิตศาสตร์ — ไม่ได้หมายความว่าเครื่องมีประสบการณ์หรือความรู้สึกเหมือนมนุษย์ โมเดลจึงเก่งมากในงานหนึ่ง แต่ยังพลาดเรื่องง่ายๆ ได้</div>
+</section>
+<!-- 4 ภาพรวมแนวคิด -->
+<section class="slide">
+  <div class="kicker">บทที่ 1 • ภาพรวมแนวคิด</div>
+  <h2>AI เป็นวงใหญ่ — <span class="grad-text">GenAI คือส่วนหนึ่งของระบบ</span></h2>
+  <div class="nest">
+    <div class="row"><span class="lbl">AI</span><p>สาขากว้างสุด — ระบบที่ทำงานซึ่งต้องอาศัยความสามารถของมนุษย์</p></div>
+    <div class="row"><span class="lbl">01 · Machine Learning</span><p>เรียนความสัมพันธ์จากตัวอย่างข้อมูล แทนการเขียนกฎทีละข้อ</p></div>
+    <div class="row"><span class="lbl">02 · Deep Learning</span><p>ML ที่ใช้โครงข่ายประสาทหลายชั้น</p></div>
+    <div class="row hl"><span class="lbl">03 · Generative AI</span><p>สร้างข้อความ ภาพ เสียง วิดีโอ โค้ด และโครงสร้าง 3D ใหม่</p></div>
+  </div>
+</section>
+
+<!-- 5 เส้นทาง AI -->
+<section class="slide">
+  <div class="kicker">บทที่ 1 • เส้นทาง AI</div>
+  <h2>จากกฎ if–then สู่<span class="grad-text">โมเดลที่ใช้เครื่องมือ</span></h2>
+  <div class="timeline"><div class="tl-grid">
+    <div class="tl-item"><div class="year">1950</div><p>Turing Test — เครื่องจักรแสดงพฤติกรรมทางภาษาเหมือนมนุษย์ได้หรือไม่</p></div>
+    <div class="tl-item"><div class="year">1956</div><p>Dartmouth — คำว่า "Artificial Intelligence" แพร่หลาย</p></div>
+    <div class="tl-item"><div class="year">2010s</div><p>Big Data + GPU + Deep Learning ทำให้เกิดการก้าวกระโดด</p></div>
+    <div class="tl-item"><div class="year">2016</div><p>AlphaGo — พลังของ deep + reinforcement learning</p></div>
+    <div class="tl-item"><div class="year">2022–26</div><p>GenAI, Multimodal, Reasoning, Agents เข้าถึงคนทั่วไป</p></div>
+  </div></div>
+  <div class="note">วงการผ่านทั้งช่วงคาดหวังสูงและ <b>"AI winter"</b> เมื่อความสามารถจริงไม่ทันคำสัญญา</div>
+</section>
+
+<!-- 6 จุดเปลี่ยน 2024-2026 -->
+<section class="slide">
+  <div class="kicker">บทที่ 1 • จุดเปลี่ยน 2024–2026</div>
+  <h2>AI เปลี่ยนจาก <span class="grad-text">"แชทบอท" สู่ "ระบบที่ลงมือทำ"</span></h2>
+  <div class="grid g3">
+    <div class="card"><h3>Multimodal by default</h3><p>โมเดลเดียวรับข้อความ ภาพ เสียง วิดีโอ และเชื่อมโยงข้ามสื่อได้</p></div>
+    <div class="card"><h3>Reasoning models</h3><p>ใช้การคำนวณขณะตอบมากขึ้นเพื่อแก้โจทย์หลายขั้น — แต่ยังอาจให้เหตุผลผิด</p></div>
+    <div class="card"><h3>AI agents</h3><p>วางแผน เรียกเครื่องมือ อ่านผล แล้วทำขั้นต่อไปภายใต้สิทธิ์ที่กำหนด</p></div>
+    <div class="card"><h3>RAG</h3><p>ค้นจากเอกสาร/ฐานความรู้ก่อนตอบ ลดการเดาและอ้างอิงข้อมูลเฉพาะองค์กร</p></div>
+    <div class="card"><h3>Small / on-device</h3><p>โมเดลเล็กบนมือถือ — เร็ว ถูก และเป็นส่วนตัวกว่า</p></div>
+    <div class="card"><h3>Open-weight ecosystem</h3><p>ดาวน์โหลดน้ำหนักโมเดลมาปรับใช้เอง นวัตกรรมกระจายตัว</p></div>
+  </div>
+  <div class="note">Stanford AI Index 2026: องค์กรที่ใช้ AI เพิ่มเป็น <b>88%</b> · นักศึกษาราว <b>4 ใน 5</b> ใช้ GenAI — แต่เหตุการณ์ความเสียหายก็เพิ่มขึ้น ความสามารถโตเร็วกว่าการกำกับดูแล</div>
+</section>
+
+<!-- 7 ANI/AGI -->
+<section class="slide">
+  <div class="kicker">บทที่ 1 • ANI, AGI และคำที่ต้องใช้ให้ระวัง</div>
+  <h2>คุยคล่อง <span class="warn">ไม่เท่ากับ</span> เป็น AGI</h2>
+  <div class="grid g2">
+    <div class="card"><div class="tag">ANI — Narrow AI</div><h3>ระบบส่วนใหญ่ในปัจจุบัน</h3><p>เป็น AI สำหรับงานหรือชุดงานที่กำหนด แม้โมเดลฐานจะทำได้หลากหลายขึ้น</p></div>
+    <div class="card"><div class="tag">AGI — คำที่ยังไม่มีนิยาม</div><h3>ไม่มีเส้นชัยที่วงการยอมรับร่วมกัน</h3><p>ไม่ควรสรุปว่าโมเดลใด "เป็น AGI" จากการคุยคล่องหรือทำข้อสอบบางชุดได้ดี</p></div>
+  </div>
+</section>
+<!--MORE-SLIDES-->
+<!-- 8 วงจรชีวิต -->
+<section class="slide">
+  <div class="kicker">บทที่ 2 • AI ทำงานอย่างไร</div>
+  <h2><span class="grad-text">วงจรชีวิต</span>ของระบบ AI</h2>
+  <div class="arrow-flow">
+    <div class="step"><div class="num">01</div><h3>นิยามปัญหา</h3><p>ใครใช้ ตัดสินใจอะไร และผิดแบบใดอันตรายที่สุด</p></div>
+    <div class="step"><div class="num">02</div><h3>ข้อมูล</h3><p>ตรวจแหล่งที่มา สิทธิ คุณภาพ และความหลากหลาย</p></div>
+    <div class="step"><div class="num">03</div><h3>ฝึกและทดสอบ</h3><p>ลด loss และวัดกับข้อมูลที่ไม่เคยเห็น</p></div>
+    <div class="step"><div class="num">04</div><h3>นำไปใช้</h3><p>เชื่อมแอป ฐานข้อมูล หรืออุปกรณ์</p></div>
+    <div class="step"><div class="num">05</div><h3>เฝ้าระวัง</h3><p>ติดตาม drift เหตุผิดปกติ และ feedback</p></div>
+  </div>
+  <div class="note"><b>Data/Model Drift</b> คือภาวะที่ประสิทธิภาพลดลงเมื่อเวลาผ่านไป เพราะข้อมูลในโลกจริงเปลี่ยนไปจากตอนฝึก — จึงต้องเฝ้าระวังตลอดอายุการใช้งาน</div>
+</section>
+
+<!-- 9 Train != Test -->
+<section class="slide">
+  <div class="kicker">บทที่ 2 • Train ≠ Test</div>
+  <h2>คะแนนดีในห้องทดลอง <span class="warn">ยังไม่แปลว่าใช้จริงได้</span></h2>
+  <div class="two-col">
+    <div class="col-card"><h3>Training</h3><p>โมเดลเรียนจากข้อมูลฝึกและปรับพารามิเตอร์ให้ลดความผิดพลาด</p><ul><li>แยกข้อมูลเป็นชุดฝึก / ชุดปรับ / ชุดทดสอบ</li><li>ความเสี่ยง: จำข้อมูลฝึกมากเกินไป (overfitting)</li></ul></div>
+    <div class="col-card"><h3>Testing</h3><p>วัดกับข้อมูลใหม่: ความแม่น ความทนทาน อคติ และความปลอดภัย</p><ul><li>ห้ามปรับโมเดลจากชุดทดสอบซ้ำจนคะแนนดูดีเกินจริง</li><li>ตัวชี้วัดต้องสัมพันธ์กับความเสียหายจริง</li></ul></div>
+  </div>
+</section>
+
+<!-- 10 LLM -->
+<section class="slide">
+  <div class="kicker">บทที่ 2 • LLM</div>
+  <h2>โมเดลภาษา = เครื่อง<span class="grad-text">ทำนายโทเคน</span>ที่ทรงพลัง</h2>
+  <p class="lead">LLM แปลงข้อความเป็น token แล้วทำนาย token ถัดไปจากบริบท — <b class="warn">ไม่ได้มีฐานข้อมูลข้อเท็จจริงที่รับประกันความถูกต้อง</b></p>
+  <div class="grid g4">
+    <div class="card"><div class="tag">PRETRAINING</div><p>เรียนรูปแบบทั่วไปจากข้อมูลจำนวนมาก</p></div>
+    <div class="card"><div class="tag">ALIGNMENT</div><p>ปรับให้ทำตามคำสั่งและตอบอย่างเป็นประโยชน์</p></div>
+    <div class="card"><div class="tag">CONTEXT WINDOW</div><p>ข้อมูลที่มองเห็นครั้งนี้ ไม่ใช่ความจำถาวร</p></div>
+    <div class="card"><div class="tag">HALLUCINATION</div><p>คำตอบฟังสมเหตุผล แต่ผิดหรือไม่มีหลักฐาน</p></div>
+  </div>
+</section>
+
+<!-- 11 เลือกเครื่องมือ -->
+<section class="slide">
+  <div class="kicker">บทที่ 2 • เลือกเครื่องมือให้ตรงงาน</div>
+  <h2>Prompt → RAG → Agent<br><span class="grad-text">ความสามารถเพิ่ม ความเสี่ยงก็เพิ่ม</span></h2>
+  <div class="grid g3">
+    <div class="card"><div class="num">01</div><h3>Prompt</h3><p>กำหนดเป้าหมาย บริบท ข้อจำกัด และรูปแบบคำตอบ — เร็วสุด ควบคุมง่ายสุด</p></div>
+    <div class="card"><div class="num">02</div><h3>RAG</h3><p>ค้นเอกสารก่อนตอบและแสดงหลักฐาน — เหมาะกับข้อมูลเฉพาะองค์กร</p></div>
+    <div class="card"><div class="num">03</div><h3>Agent</h3><p>วางแผน เรียกเครื่องมือ ลงมือทำ — ต้องจำกัดสิทธิ์อย่างเข้มงวด</p></div>
+  </div>
+</section>
+<!-- 12 Prompting -->
+<section class="slide">
+  <div class="kicker">บทที่ 2 • Prompting</div>
+  <h2>คำสั่งที่ดีมี <span class="grad-text">5 ส่วน</span></h2>
+  <div class="grid g5">
+    <div class="card"><div class="num">01</div><h3>เป้าหมาย</h3><p>ต้องการอะไร</p></div>
+    <div class="card"><div class="num">02</div><h3>บริบท</h3><p>สถานการณ์ที่เกี่ยวข้อง</p></div>
+    <div class="card"><div class="num">03</div><h3>ข้อมูลนำเข้า</h3><p>วัตถุดิบให้โมเดลใช้</p></div>
+    <div class="card"><div class="num">04</div><h3>ข้อจำกัด</h3><p>สิ่งที่ต้อง/ห้ามทำ</p></div>
+    <div class="card"><div class="num">05</div><h3>รูปแบบผลลัพธ์</h3><p>ตอบออกมาหน้าตาอย่างไร</p></div>
+  </div>
+  <div class="note">เทคนิคสำคัญ: บอกให้โมเดลแยก <b>"สิ่งที่ทราบ"</b> ออกจาก <b>"สิ่งที่ไม่แน่ใจ"</b> เสมอ</div>
+</section>
+
+<!-- 13 Multimodal -->
+<section class="slide">
+  <div class="kicker">บทที่ 2 • Multimodal AI</div>
+  <h2>รับหลายสื่อ <span class="warn">≠</span> ถูกต้องอัตโนมัติ</h2>
+  <p class="lead">Multimodal AI รับข้อความ ภาพ เสียง และวิดีโอ — ช่วยอธิบายกราฟ ถอดเสียงประชุม วิเคราะห์ภาพ หรือโต้ตอบด้วยเสียงได้</p>
+  <div class="note"><b>ข้อควรระวัง:</b> โมเดลอาจอ่านข้อความเล็กผิด ระบุตำแหน่งคลาดเคลื่อน หรือสร้างรายละเอียดที่ไม่มีในภาพขึ้นมา — ต้องตรวจสอบเหมือนเดิม</div>
+</section>
+
+<!-- 14 AI Agents -->
+<section class="slide">
+  <div class="kicker">บทที่ 2 • AI Agents</div>
+  <h2>จาก "ตอบ" สู่ <span class="grad-text">"ลงมือทำ"</span></h2>
+  <p class="lead">Agent ทำวงจร: เป้าหมาย → วางแผน → เรียกเครื่องมือ → อ่านผล → ตรวจสอบ → ทำต่อ<br>ยิ่ง Agent มีสิทธิ์มาก ความเสี่ยงก็ยิ่งสูง</p>
+  <div class="grid g3">
+    <div class="card"><div class="num">01</div><h3>Least privilege</h3><p>ให้สิทธิ์เท่าที่จำเป็นและแยกพื้นที่ทดลอง</p></div>
+    <div class="card"><div class="num">02</div><h3>Approval gate</h3><p>ขออนุมัติก่อนส่ง ลบ เผยแพร่ หรือชำระเงิน</p></div>
+    <div class="card"><div class="num">03</div><h3>Audit &amp; rollback</h3><p>บันทึกทุกการกระทำ หยุดและย้อนกลับได้</p></div>
+  </div>
+  <div class="note">แยก <b>ข้อมูล</b> ออกจาก <b>คำสั่ง</b> เพื่อป้องกัน prompt injection ที่ซ่อนอยู่ในเว็บหรือเอกสาร</div>
+</section>
+
+<!-- 15 AI เพื่อการเรียน -->
+<section class="slide">
+  <div class="kicker">บทที่ 3 • AI ในชีวิตและการศึกษา</div>
+  <h2>ใช้ AI เป็น<span class="grad-text">คู่คิด</span> ไม่ใช่ทางลัด</h2>
+  <div class="grid g4">
+    <div class="card"><div class="tag">LEARN</div><h3>ขอภาพรวม</h3><p>ขอภาพรวมและศัพท์สำคัญ แล้วเปรียบเทียบกับแหล่งที่เชื่อถือได้</p></div>
+    <div class="card"><div class="tag">TRY</div><h3>ลองทำเอง</h3><p>ทำโจทย์ด้วยตนเองก่อน แล้วขอ "คำใบ้ทีละขั้น" แทนคำตอบทันที</p></div>
+    <div class="card"><div class="tag">CHECK</div><h3>ตรวจหลักฐาน</h3><p>ให้ AI ตรวจตรรกะ แล้วตรวจซ้ำด้วยการคำนวณ โค้ด หรือแหล่งอ้างอิง</p></div>
+    <div class="card"><div class="tag">REFLECT</div><h3>สรุปด้วยตนเอง</h3><p>อธิบายด้วยภาษาตัวเองว่าอะไรผิด อะไรเรียนรู้ และยังสงสัยอะไร</p></div>
+  </div>
+  <div class="note">ถ้าใช้ AI ทำงานแทนทั้งหมด ผู้เรียนอาจสูญเสียการอ่านลึก การเขียน และการคิดด้วยตนเอง — UNESCO เน้นแนวทาง <b>human-centred, inclusion, equity</b></div>
+</section>
+
+<!-- 16 SIFT-AI -->
+<section class="slide">
+  <div class="kicker">บทที่ 3 • SIFT–AI</div>
+  <h2>ตรวจคำตอบ AI <span class="grad-text">ก่อนเชื่อและแชร์</span></h2>
+  <div class="grid g4">
+    <div class="card"><div class="tag">S — STOP</div><h3>หยุดก่อน</h3><p>อย่าเพิ่งเชื่อหรือแชร์ทันที โดยเฉพาะเรื่องสำคัญ</p></div>
+    <div class="card"><div class="tag">I — INVESTIGATE</div><h3>ตรวจแหล่ง</h3><p>คำตอบมาจากไหน มีหลักฐานรองรับหรือไม่</p></div>
+    <div class="card"><div class="tag">F — FIND</div><h3>หาแหล่งอื่น</h3><p>เปรียบเทียบกับแหล่งที่เชื่อถือได้หลายแหล่ง</p></div>
+    <div class="card"><div class="tag">T — TRACE</div><h3>ย้อนต้นฉบับ</h3><p>ตามไปดูบริบทเดิม ไม่ใช่เวอร์ชันที่ถูกตัดทอน</p></div>
+  </div>
+  <p class="tagline">ยิ่งผลกระทบสูง ยิ่งต้องใช้หลักฐานและผู้เชี่ยวชาญกำกับ</p>
+</section>
+<!-- 17 บทที่ 4 -->
+<section class="slide">
+  <div class="kicker">บทที่ 4 • จากเดโมสู่งานจริง</div>
+  <h2>AI สร้างคุณค่า <span class="grad-text">เมื่อมนุษย์ยังรับผิดชอบ</span></h2>
+  <p class="lead">เริ่มจากปัญหา เกณฑ์สำเร็จ และผลเสียเมื่อระบบผิด — ไม่ใช่เริ่มจากเทคโนโลยี</p>
+  <div class="grid g2">
+    <div class="card"><h3>การแพทย์</h3><p>AI คัดกรอง • มนุษย์วินิจฉัยและอธิบาย — ใช้กับคนจริงต้องระวังข้อมูลที่ไม่ครอบคลุมและผลกระทบต่อผู้ป่วย</p></div>
+    <div class="card"><h3>ขนส่ง + เกษตร</h3><p>AI พยากรณ์ • มนุษย์ตัดสินใจตามความปลอดภัยและพื้นที่ — ต้องทำงานได้แม้เครือข่ายจำกัดและคำนึงถึงต้นทุนจริงของเกษตรกร</p></div>
+    <div class="card"><h3>งานสร้างสรรค์</h3><p>AI ทำต้นแบบ • มนุษย์กำกับสิทธิและเครดิต รักษาความเป็นต้นฉบับ</p></div>
+    <div class="card"><h3>ซอฟต์แวร์</h3><p>AI ร่างโค้ด • มนุษย์ review, test และ deploy</p></div>
+  </div>
+</section>
+
+<!-- 18 ประเทศไทย -->
+<section class="slide">
+  <div class="kicker">บทที่ 5 • ประเทศไทย</div>
+  <h2>เป้าหมาย AI ของไทย <span class="grad-text">ระยะสองปี</span></h2>
+  <div class="grid g3">
+    <div class="card stat"><span class="v">10M+</span><span class="l">ผู้ใช้ AI</span></div>
+    <div class="card stat"><span class="v">90,000</span><span class="l">ผู้เชี่ยวชาญ</span></div>
+    <div class="card stat"><span class="v">50,000</span><span class="l">นักพัฒนา</span></div>
+  </div>
+  <p class="lead" style="margin-top:1.4rem">ภายใต้แผนปฏิบัติการด้าน AI แห่งชาติ พ.ศ. 2565–2570 (5 เสาหลัก: จริยธรรม/กฎหมาย · โครงสร้างพื้นฐาน · กำลังคน · วิจัยและพัฒนา · การประยุกต์ใช้)</p>
+  <p class="tagline">โอกาส: ภาษาไทย • เกษตร • ท่องเที่ยว • สุขภาพ • SMEs</p>
+</section>
+
+<!-- 19 แต้มต่อ + ท้าทาย -->
+<section class="slide">
+  <div class="kicker">บทที่ 5 • ประเทศไทยในสมรภูมิ AI 2026</div>
+  <h2>แต้มต่อของไทย <span class="grad-text">และความท้าทาย</span>ที่ต้องแก้พร้อมกัน</h2>
+  <div class="two-col">
+    <div class="col-card good"><h3>โอกาสที่มีแต้มต่อ</h3><ul>
+      <li>ภาษาและวัฒนธรรมไทย — การตัดคำ สำเนียง เอกสารราชการ บริบทท้องถิ่น</li>
+      <li>เกษตร อาหาร ท่องเที่ยว สุขภาพ — มีโจทย์จริงและข้อมูลเฉพาะโดเมน</li>
+      <li>SMEs จำนวนมากต้องการเครื่องมือราคาจับต้องได้ ใช้ง่าย บนมือถือ</li>
+      <li>บริการภาครัฐและการศึกษา — เพิ่มการเข้าถึงโดยไม่ทิ้งกลุ่มเปราะบาง</li>
+    </ul></div>
+    <div class="col-card bad"><h3>ความท้าทาย</h3><ul>
+      <li>ข้อมูลคุณภาพและสิทธิการใช้ข้อมูล</li>
+      <li>โครงสร้างพื้นฐาน พลังงาน และต้นทุน cloud/GPU</li>
+      <li>บุคลากรตั้งแต่ผู้ใช้ที่รู้เท่าทันถึงวิศวกร</li>
+      <li>การประเมินภาษาไทย ไม่พึ่ง benchmark อังกฤษอย่างเดียว</li>
+      <li>ธรรมาภิบาลที่ไม่ปิดกั้นนวัตกรรม</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- 20 Responsible AI -->
+<section class="slide">
+  <div class="kicker">บทที่ 6 • Responsible AI</div>
+  <h2>ความเสี่ยงต้องถูก<span class="grad-text">ออกแบบ</span>ตั้งแต่วันแรก</h2>
+  <div class="grid g3">
+    <div class="card"><div class="num">01</div><h3>ความถูกต้อง</h3><p>hallucination และคำตอบที่ฟังดูน่าเชื่อแต่ผิด</p></div>
+    <div class="card"><div class="num">02</div><h3>อคติ</h3><p>ข้อมูลฝึกที่ไม่ครอบคลุมสะท้อนความเหลื่อมล้ำ</p></div>
+    <div class="card"><div class="num">03</div><h3>ข้อมูลลับ</h3><p>รหัสผ่าน ข้อมูลสุขภาพ ข้อมูลลูกค้า เอกสารลับ</p></div>
+    <div class="card"><div class="num">04</div><h3>Cybersecurity</h3><p>prompt injection และการโจมตีผ่านเครื่องมือ</p></div>
+    <div class="card"><div class="num">05</div><h3>สิทธิและลิขสิทธิ์</h3><p>สิทธิในข้อมูล ผลงาน และบุคคลที่ถูกเลียนแบบ</p></div>
+    <div class="card"><div class="num">06</div><h3>ผลกระทบต่อคน</h3><p>งาน ความเท่าเทียม และผู้ที่ถูกตัดสินโดยระบบ</p></div>
+  </div>
+</section>
+<!-- 21 กฎ 7 ข้อ -->
+<section class="slide">
+  <div class="kicker">บทที่ 6 • ก่อนกดใช้</div>
+  <h2>กฎ <span class="grad-text">7 ข้อ</span> ก่อนกดใช้ AI</h2>
+  <ul class="tight">
+    <li>ไม่ใส่รหัสผ่าน ข้อมูลสุขภาพ ข้อมูลลูกค้า หรือเอกสารลับลงบริการที่ไม่ได้รับอนุมัติ</li>
+    <li>ตรวจข้อเท็จจริง ตัวเลข โค้ด และแหล่งอ้างอิงก่อนนำไปใช้</li>
+    <li>เปิดเผยการใช้ AI เมื่อมีผลต่อการประเมิน งานวิชาการ หรือความเชื่อมั่นของผู้รับ</li>
+    <li>ขอความยินยอมก่อนโคลนเสียง ใบหน้า หรือสไตล์ของบุคคล</li>
+    <li>อย่าให้ Agent มีสิทธิ์ลบ ส่ง เผยแพร่ หรือชำระเงินโดยไม่มีการยืนยัน</li>
+    <li>เก็บบันทึกเวอร์ชันโมเดล คำสั่ง ข้อมูล และผลการทดสอบในระบบสำคัญ</li>
+    <li>มีช่องทางให้คนทักท้วง แก้ไข และอุทธรณ์ผลลัพธ์</li>
+  </ul>
+</section>
+
+<!-- 22 EU AI Act -->
+<section class="slide">
+  <div class="kicker">บทที่ 6 • กฎหมายและมาตรฐาน</div>
+  <h2>กฎหมายกำลังเป็น<span class="grad-text">ทักษะพื้นฐาน</span></h2>
+  <div class="timeline"><div class="tl-grid">
+    <div class="tl-item"><div class="year">2025</div><p>EU AI Act: ข้อห้ามบางประเภทและหน้าที่ AI literacy เริ่มมีผล</p></div>
+    <div class="tl-item"><div class="year">2025</div><p>กฎสำหรับโมเดลอเนกประสงค์ (GPAI) เริ่มมีผล</p></div>
+    <div class="tl-item"><div class="year">ส.ค. 2026</div><p>กรอบส่วนใหญ่ของ AI Act เริ่มมีผลเต็มรูปแบบ</p></div>
+  </div></div>
+  <div class="note">แนวคิด <b>"กำกับตามระดับความเสี่ยง"</b> ส่งผลต่อองค์กรทั่วโลก — แม้ไม่ได้ทำงานในยุโรปก็ควรเข้าใจเรื่องหลักฐาน การประเมิน ความโปร่งใส และความรับผิดชอบ</div>
+</section>
+
+<!-- 23 การควบคุม AI -->
+<section class="slide">
+  <div class="kicker">บทที่ 6 • การควบคุม AI</div>
+  <h2>"AI เกินการควบคุม" — แยก<span class="grad-text">ความเสี่ยงที่เกิดแล้ว</span> ออกจากอนาคต</h2>
+  <div class="grid g4">
+    <div class="card"><div class="num">01</div><h3>เกิดขึ้นได้แล้ว</h3><p>ระบบทำสิ่งที่ไม่ตั้งใจ — ส่งข้อความผิดคน ตีความเป้าหมายคลาด เชื่อคำสั่งอันตรายในเว็บ หรือมนุษย์แทรกแซงไม่ทัน</p></div>
+    <div class="card"><div class="num">02</div><h3>ประเมินยากขึ้น</h3><p>reward hacking และการสังเกตว่ากำลังถูกทดสอบ ทำให้ประเมินความสามารถและความปลอดภัยยากขึ้น (AI Safety Report 2026)</p></div>
+    <div class="card"><div class="num">03</div><h3>อนาคตไม่แน่นอน</h3><p>Loss of Control ต้องอาศัยหลายความสามารถร่วมกัน: วางแผนระยะยาว หลบการกำกับ ปกปิดพฤติกรรม ต่อต้านการปิดระบบ</p></div>
+    <div class="card"><div class="num">04</div><h3>สิ่งที่ทำได้วันนี้</h3><p>จำกัดสิทธิ์ ขออนุมัติก่อนลงมือ มีปุ่มหยุดฉุกเฉิน บันทึกและย้อนกลับได้ ทดสอบทั้งกรณีปกติและการโจมตี</p></div>
+  </div>
+</section>
+
+<!-- 24 แผน 30 วัน -->
+<section class="slide">
+  <div class="kicker">บทที่ 7 • แผนฝึก 30 วัน</div>
+  <h2>จากผู้ใช้ สู่<span class="grad-text">ผู้สร้างระบบที่ตรวจสอบได้</span></h2>
+  <div class="arrow-flow">
+    <div class="step"><div class="num">WEEK 1</div><h3>Prompt + ตรวจแหล่ง</h3><p>ใช้ AI อย่างมีหลักฐาน บันทึกข้อผิดพลาดที่เจอ</p></div>
+    <div class="step"><div class="num">WEEK 2</div><h3>Dataset + Train/Test</h3><p>ทำ dataset เล็ก แบ่งชุดข้อมูล อ่าน confusion matrix</p></div>
+    <div class="step"><div class="num">WEEK 3</div><h3>RAG ไทย + citation</h3><p>สร้าง RAG จากเอกสารภาษาไทย 10–20 หน้า พร้อมอ้างอิง</p></div>
+    <div class="step"><div class="num">WEEK 4</div><h3>Tools + approval + evals</h3><p>เพิ่ม tool calling, human approval, evaluation 30 เคส และเขียน model card</p></div>
+  </div>
+</section>
+
+<!-- 25 บทสรุป -->
+<section class="slide">
+  <div class="kicker">บทสรุป</div>
+  <h1>อนาคตไม่ได้ถามว่า<br>AI ทำอะไรได้ — แต่อยู่ที่<br><span class="grad-text">เราออกแบบมันอย่างไร</span></h1>
+  <div class="rule"></div>
+  <div class="grid g3">
+    <div class="card"><div class="num">01</div><h3>เลือกวิธีให้เหมาะกับปัญหา</h3><p>Prompt / RAG / Agent ไม่ใช่ของที่ใหญ่กว่าดีกว่าเสมอ</p></div>
+    <div class="card"><div class="num">02</div><h3>วัดงานจริง ต้นทุน ความปลอดภัย</h3><p>ไม่ใช่ดูเพียงคำตอบที่สวยหรือคะแนนในห้องทดลอง</p></div>
+    <div class="card"><div class="num">03</div><h3>ใช้ AI ขยายความสามารถมนุษย์</h3><p>ระบบที่ดีที่สุดอาจเป็นระบบเล็กที่เร็ว ปลอดภัย อ้างอิงได้ และแก้ปัญหาคนไทยได้จริง</p></div>
+  </div>
+</section>
+
+<!-- 26 อ่านต่อ -->
+<section class="slide">
+  <div class="kicker">อ่านต่อ • แหล่งอ้างอิงหลัก</div>
+  <h2>แหล่งอ้างอิงและ<span class="grad-text">อ่านต่อ</span></h2>
+  <div class="grid g3">
+    <div class="card"><div class="tag">STANFORD HAI</div><h3>AI Index Report 2025–2026</h3><p>hai.stanford.edu/ai-index</p></div>
+    <div class="card"><div class="tag">AI THAILAND</div><h3>National AI Strategy 2022–2027</h3><p>ai.in.th</p></div>
+    <div class="card"><div class="tag">UNESCO</div><h3>AI in Education</h3><p>unesco.org/en/digital-education/artificial-intelligence</p></div>
+    <div class="card"><div class="tag">EUROPEAN COMMISSION</div><h3>EU AI Act</h3><p>digital-strategy.ec.europa.eu</p></div>
+    <div class="card"><div class="tag">AI SAFETY REPORT</div><h3>International Report 2026</h3><p>internationalaisafetyreport.org</p></div>
+    <div class="card"><div class="tag">NIST</div><h3>AI Agent Standards Initiative</h3><p>nist.gov/artificial-intelligence</p></div>
+  </div>
+  <p class="tagline">ตรวจสอบข้อมูลล่าสุดก่อนนำไปใช้ — ตัวเลขและกฎหมายเปลี่ยนเร็ว</p>
+</section>
+
+<!-- 27 ปิดท้าย -->
+<section class="slide">
+  <div class="kicker">PLO7 • AI Basics 2026</div>
+  <h1>ขอบคุณครับ<br><span class="grad-text">เริ่มจากปัญหา จบที่ความรับผิดชอบ</span></h1>
+  <div class="rule"></div>
+  <p class="lead">บทบาทของนักวิทยาการคอมพิวเตอร์ไม่ใช่แค่เขียนโค้ดให้รัน แต่ต้องนิยามปัญหา ดูแลข้อมูล เลือกโมเดล ออกแบบการกำกับ ประเมินในโลกจริง และรับผิดชอบต่อผู้ใช้</p>
+  <p class="tagline mono">ถาม–ตอบ · ตรวจสอบข้อมูลล่าสุดก่อนนำไปใช้เสมอ</p>
+</section>
+</div>
+<div id="hud">
+  <span class="brand">PLO7 • AI Basics 2026</span>
+  <span class="count" id="count">1 / 27</span>
+</div>
+<div id="hint"><kbd>←</kbd> <kbd>→</kbd> เลื่อนสไลด์ &nbsp;·&nbsp; <kbd>O</kbd> ภาพรวม &nbsp;·&nbsp; <kbd>F</kbd> เต็มจอ &nbsp;·&nbsp; <kbd>Home</kbd>/<kbd>End</kbd> ไปต้น/ท้าย</div>
+<div id="nav">
+  <button id="prev" aria-label="ก่อนหน้า">‹</button>
+  <button id="next" aria-label="ถัดไป">›</button>
+</div>
+<script>
+const deck=document.getElementById('deck');
+const slides=[...deck.querySelectorAll('.slide')];
+const countEl=document.getElementById('count');
+const bar=document.getElementById('progress');
+let i=0;
+function show(n){
+  i=Math.max(0,Math.min(slides.length-1,n));
+  slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+  countEl.textContent=(i+1)+' / '+slides.length;
+  bar.style.width=((i+1)/slides.length*100)+'%';
+  if(location.hash!=='#'+(i+1)) history.replaceState(null,'','#'+(i+1));
+}
+function next(){show(i+1)} function prev(){show(i-1)}
+document.getElementById('next').onclick=next;
+document.getElementById('prev').onclick=prev;
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();next();}
+  else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();prev();}
+  else if(e.key==='Home'){show(0);}
+  else if(e.key==='End'){show(slides.length-1);}
+  else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
+  else if(e.key==='o'||e.key==='O'||e.key==='Escape'){deck.classList.toggle('overview');}
+});
+deck.addEventListener('click',e=>{
+  if(deck.classList.contains('overview')){
+    const s=e.target.closest('.slide');
+    if(s){deck.classList.remove('overview'); show(slides.indexOf(s));}
+  }
+});
+let tx=0;
+deck.addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});
+deck.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx; if(Math.abs(dx)>50){dx<0?next():prev();}},{passive:true});
+const start=parseInt((location.hash||'').slice(1))-1;
+show(isNaN(start)?0:start);
+</script>
+</body>
+</html>
